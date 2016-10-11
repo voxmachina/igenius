@@ -1,30 +1,6 @@
-# Angular2 boilerplate on steroids
+# http://igeni.us
 
-This is an [Angular2](https://angular.io/) full project boilerplate on steroids!
-
-It provides both frontend and a simple PHP backend REST API service to deliver the data which is being cached for two hours in the filesystem, the Docker image provides everything you'll need to develop locally, so no crazy LAMP installations will occur.
-
-The steroids component is the speed and optimizations already done for you, by using several mechanisms which includes the [Angular AoT compilation mechanism](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) also but not only and all managed through [Gulp](http://gulpjs.com/) tasks.
-
-Latest performance results from [Google PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
-
-![My image](https://voxmachina.github.io/img/boilerplate_gstatus.png)
-
-Latest performance results from [WebPageTest](https://www.webpagetest.org/)
-
-![My image](https://voxmachina.github.io/img/boilerplate_pstatus.png)
-
-The live version of this boilerplate it's actually my own personal website at: http://igeni.us, so feel free to test it for yourself ;)
-
-## About
-
-This implements a simple personal website with three pages, reading content from json endpoints from Medium, Instagram and Github; then there's an about page and a contacts page.
-
-The front-end section is build with Angular2, the back-end uses PHP to deliver the results and also cache them locally, also provides all the necessary .htaccess files and rules to make the app work properly.
-
-The project uses a series of methods and mechanisms to achieve top performance and speed, and all is manageable through simple Gulp tasks; the only more complex task is the task that performs the Angular AoT compilation mechanism which replaces the app entry code by updating some imports, it was a hacky solution to achieve conditional imports because that is something that Typescript does not support.
-
-Another complex mechanism is added as a task also to deliver a first version of the content for the above-the-fold target, which basically transforms index.html into an index.php with the top menu bar and only loads through PHP the Medium feed, a barely perceived difference on good connections, but on slow connections it makes all the difference between someone leaving your site or start reading something right away and staying for more. 
+This is a fork of the [Angular2 full project boilerplate on steroids](https://github.com/voxmachina/angular2-boilerplate)!
 
 You can read all about this project story on [Medium](https://medium.com/dinomad/angular2-boilerplate-on-steroids-86dcf7390542#.8ekof7gjh)
 
