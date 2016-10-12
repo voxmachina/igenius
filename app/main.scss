@@ -104,6 +104,7 @@ em {
 .dashboard {
   @include flexbox();
   @include flex-direction(column);
+  min-height: 100%;
 
   @include media-breakpoint-up(lg) {
     @include flex-direction(row);
