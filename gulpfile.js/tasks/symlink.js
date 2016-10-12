@@ -1,3 +1,5 @@
+/*jslint node: true, esversion: 6 */
+
 "use strict";
 
 const gulp = require('gulp');
@@ -19,7 +21,19 @@ let gulpSSH = new GulpSSH({
     sshConfig: config.ssh
 });
 
-gulp.task('symlink:index', function() {
+let rootDir = config.rootDir;
+
+gulp.task('symlink:root', function(done) {
+   let taskName = process.argv[process.argv.length-1];
+
+   if (taskName === 'stage') {
+       rootDir = config.stageDir;
+   } 
+
+   done();
+});
+
+gulp.task('symlink:index', ['symlink:root'], function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
             'js': {
@@ -40,7 +54,7 @@ gulp.task('symlink:index', function() {
             },
             'criticalHtml': {
                 src: gulp.src('./config/critical.html').pipe(htmlMin()),
-                tpl: '<?php $rootDir = "'+config.rootDir+'"; ?>%s'
+                tpl: '<?php $rootDir = "'+rootDir+'"; ?>%s'
             }
         }))
         .pipe(gulp.dest('release/'));
@@ -91,8 +105,6 @@ gulp.task('symlink:clean', ['symlink:helpers'], function() {
 });
 
 gulp.task('symlink:prepare', ['symlink:clean'], function() {
-    let rootDir = config.rootDir;
-
     return gulp.src(['release/**/*'], {
             dot: true
         })
@@ -103,8 +115,6 @@ gulp.task('symlink:prepare', ['symlink:clean'], function() {
 });
 
 gulp.task('symlink:create', ['symlink:prepare'], function() {
-    let rootDir = config.rootDir;
-
     return gulpSSH
         .exec([
             'mkdir ' + rootDir + currentDateTimeStamp,
@@ -116,6 +126,8 @@ gulp.task('symlink:create', ['symlink:prepare'], function() {
             'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
         ]);
 });
+
+gulp.task('symlink:stage', ['symlink:create']);
 
 gulp.task('symlink', ['symlink:create'], function() {
     let zoneId = config.cloudflare.zoneId;

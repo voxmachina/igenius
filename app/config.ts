@@ -15,6 +15,14 @@ export class Config {
                     devMode: true
                 };
                 break;
+            case "staging.igeni.us":
+                data = {
+                    mediumEndpoint: "http://staging.igeni.us/api/www/services/content/public/medium",
+                    instagramEndpoint: "http://staging.igeni.us/api/www/services/content/public/instagram",
+                    githubEndpoint: "http://staging.igeni.us/api/www/services/content/public/github",
+                    devMode: false
+                };
+                break;
             default:
                 data = {
                     mediumEndpoint: "http://igeni.us/api/www/services/content/public/medium",
