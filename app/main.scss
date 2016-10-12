@@ -1,8 +1,10 @@
 @import "../node_modules/bootstrap/scss/normalize";
+@import "../node_modules/sass-flex-mixin/flex";
 
 /* https://fonts.googleapis.com/css?family=Open+Sans : */
 
 /* cyrillic-ext */
+
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;

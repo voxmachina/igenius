@@ -23,13 +23,13 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 EXPOSE 80
 
 # Copy this repo into place.
-ADD www /var/www/ngboilerplate
+ADD www /var/www/igenius
 
 # Update the default apache site with the config we created.
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-CMD chmod 755 -R /var/www/ngboilerplate/services/content
-CMD chmod -R o+w /var/www/ngboilerplate/services/content/storage
+CMD chmod 755 -R /var/www/igenius/services/content
+CMD chmod -R o+w /var/www/igenius/services/content/storage
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
