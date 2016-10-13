@@ -38,11 +38,16 @@ class InstagramController extends Controller
         $posts = $data->data;
         $content = [];
         $index = 0;
+        $filename = "";
 
         foreach($posts as $post) {
             if ($index > 2) {
                 break;
             }
+
+            $filename = substr($post->images->standard_resolution->url, 8);
+            $filenameTokens = explode("?", $filename);
+            $filename = "/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
 
             $content[$index] = [
                     'id' => $post->id,
@@ -50,7 +55,7 @@ class InstagramController extends Controller
                     'subTitle' => '',
                     'url' => $post->link,
                     'createdAt' => date('d M Y', $post->created_time),
-                    'thumbnail' => $post->images->standard_resolution->url,
+                    'thumbnail' => $filename,
             ];
 
             if ($post->caption !== null && $post->caption->text !== null) {

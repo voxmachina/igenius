@@ -42,6 +42,7 @@ class MediumController extends Controller
         $index = 0;
         $postUrlPrefix = "https://medium.com/dinomad/";
         $imageUrlPrefix = "https://cdn-images-1.medium.com/max/720/";
+        $filename = "";
 
         foreach($posts as $post) {
             if ($index > 2) {
@@ -58,7 +59,11 @@ class MediumController extends Controller
             ];
 
             if ($post->virtuals->previewImage->imageId !== "") {
-                $content[$index]['thumbnail'] = $imageUrlPrefix . $post->virtuals->previewImage->imageId;
+                $filename = substr($imageUrlPrefix . $post->virtuals->previewImage->imageId, 8);
+                $filenameTokens = explode("?", $filename);
+                $filename = "/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
+
+                $content[$index]['thumbnail'] = $filename;
             }
 
             $index++;
