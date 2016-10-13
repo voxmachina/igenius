@@ -8,6 +8,7 @@ const gzip = require('gulp-gzip');
 const htmlReplace = require('gulp-html-replace');
 const sass = require('gulp-sass');
 const htmlMin = require('gulp-html-minifier');
+const cleanCSS = require('gulp-clean-css');
 const GulpSSH = require('gulp-ssh');
 const config = require('./../../config/gulp.json');
 const rename = require('gulp-rename');
@@ -49,7 +50,7 @@ gulp.task('symlink:index', ['symlink:root'], function() {
                 tpl: '<link rel="stylesheet" type="text/css" href="%s"/>'
             },
             'criticalCss': {
-                src: gulp.src('./config/critical.scss').pipe(sass()),
+                src: gulp.src('./config/critical.scss').pipe(sass()).pipe(cleanCSS({compatibility: 'ie10'})),
                 tpl: '<style>%s</style>'
             },
             'criticalHtml': {
