@@ -1,6 +1,11 @@
 <nav>
     <div id="toggle">
         <div class="header">
+            <ul class="menu menu-desktop">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
             <div class="burguer">
                 <span class="burguer-row-1"></span>
                 <span class="burguer-row-2"></span>
@@ -12,27 +17,73 @@
 </nav>
 
 <?php
-    $posts = [];
-    $filename = $rootDir . 'current/api/www/services/content/storage/medium.json';
+    $mediumPosts = [];
+    $instagramPosts = [];
+    $githubPosts = [];
 
-    if (file_exists($filename)) {
-        $posts = json_decode(file_get_contents($filename));
+    $mediumFilename = $rootDir . 'current/api/www/services/content/storage/medium.json';
+    $instagramFilename = $rootDir . 'current/api/www/services/content/storage/instagram.json';
+    $githubFilename = $rootDir . 'current/api/www/services/content/storage/github.json';
+
+    if (file_exists($mediumFilename)) {
+        $mediumPosts = json_decode(file_get_contents($mediumFilename));
+    }
+
+    if (file_exists($instagramFilename)) {
+        $instagramPosts = json_decode(file_get_contents($instagramFilename));
+    }
+
+    if (file_exists($githubFilename)) {
+        $githubPosts = json_decode(file_get_contents($githubFilename));
     }
 ?>
-<div class="posts">
-    <h4>Latest posts from medium</h4>
-    <ul>
-        <?php foreach($posts as $post): ?>
-        <li >
-            <?php if (isset($post->thumbnail) && $post->thumbnail !== ''): ?>
-            <div class="thumbnail">
-                <img src="<?php echo $post->thumbnail; ?>"/>
-            </div>
-            <?php endif; ?>
-            <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
-            <em><?php echo $post->subTitle; ?></em>
-            <span><?php echo $post->createdAt; ?></span>
-        </li>
-        <?php endforeach; ?>
-    </ul>
-</div>
+<section class="dashboard">
+    <div class="posts">
+        <h4>Latest posts from medium</h4>
+        <ul>
+            <?php foreach($mediumPosts as $post): ?>
+            <li >
+                <?php if (isset($post->thumbnail) && $post->thumbnail !== ''): ?>
+                <div class="thumbnail">
+                    <img src="<?php echo $post->thumbnail; ?>"/>
+                </div>
+                <?php endif; ?>
+                <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
+                <em><?php echo $post->subTitle; ?></em>
+                <span><?php echo $post->createdAt; ?></span>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <div class="posts">
+        <h4>Latest posts from instagram</h4>
+        <ul>
+            <?php foreach($instagramPosts as $post): ?>
+            <li>
+                <?php if (isset($post->thumbnail) && $post->thumbnail !== ''): ?>
+                <div class="thumbnail">
+                    <a href="<?php echo $post->url; ?>"><img src="<?php echo $post->thumbnail; ?>"/></a>
+                </div>
+                <?php endif; ?>
+                <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
+                <em><?php echo $post->subTitle; ?></em>
+                <span><?php echo $post->createdAt; ?></span>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <div class="posts">
+        <h4>Latest posts from github</h4>
+        <ul>
+            <?php foreach($githubPosts as $post): ?>
+            <li>
+                <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
+                <em><?php echo $post->subTitle; ?></em>
+                <span><?php echo $post->createdAt; ?></span>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</section>

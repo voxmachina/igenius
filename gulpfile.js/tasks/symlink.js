@@ -65,9 +65,9 @@ gulp.task('symlink:helpers', ['symlink:index'], function() {
     return gulp.src(["./release/app/*.css", "./release/app/*.js", "./release/lib/*.js"])
       .pipe(rename(function (path) {
           if (path.basename === 'main' || path.basename === 'config') {
-              path.dirname = 'app'
+              path.dirname = 'app';
           } else {
-              path.dirname = 'lib'
+              path.dirname = 'lib';
           }
         path.basename += "." + currentDateTimeStamp;
         return path;
