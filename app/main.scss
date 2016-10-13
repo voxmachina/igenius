@@ -111,6 +111,11 @@ em {
     margin: 0 auto;
     width: 940px;
   }
+
+  &-single {
+    @include flex-direction(column);
+    max-width: 520px;
+  }
 }
 
 .posts {

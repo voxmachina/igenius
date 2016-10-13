@@ -1,3 +1,8 @@
+@import "../../../node_modules/bootstrap/scss/normalize";
+@import "../../../node_modules/bootstrap/scss/custom";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
 @import "../../../node_modules/sass-flex-mixin/flex";
 
 #toggle {
@@ -44,11 +49,20 @@
         .headline {
             @include flex-grow(1);
             text-align: center;
+
+            @include media-breakpoint-up(lg) {
+                text-align: right;
+                font-size: 14px;
+            }
         }
     }
 
     .burguer {
         cursor: pointer;
+
+        @include media-breakpoint-up(lg) {
+            display: none;
+        }
     }
 
     span {
@@ -74,7 +88,7 @@
         }
     }
 
-    #menu {
+    .menu {
         height: 100%;
         width: 100%;
         margin: -100px 0 0 -50px;
@@ -86,9 +100,40 @@
         transform: translate(-100%, 0);
         transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 
+        @include media-breakpoint-up(lg) {
+            display: none;
+        }
+
+        &-desktop {
+            display: none;
+
+            @include media-breakpoint-up(lg) {
+                display: block;
+            }
+        }
+
         li {
             padding: 5px 0;
             font-size: 22px;
+        }
+    }
+
+    .menu-desktop {
+        height: auto;
+        width: auto;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        list-style-type: none;
+        -webkit-font-smoothing: antialiased;
+        transform-origin: 0 0;
+        transform: none;
+        transition: none;
+
+        li {
+            display: inline-block;
+            padding: 0 5px;
+            font-size: 16px;
         }
     }
 
@@ -96,7 +141,7 @@
         height: 100%;
         transition: height .1s linear;
 
-        #menu {
+        .menu {
             transform: scale(1.0, 1.0);
             opacity: 0.95;
         }
