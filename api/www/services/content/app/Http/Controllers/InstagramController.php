@@ -49,6 +49,10 @@ class InstagramController extends Controller
             $filenameTokens = explode("?", $filename);
             $filename = "/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
 
+            if (strpos($_SERVER["HTTP_HOST"], "localhost") !== false) {
+                $filename = "http://localhost:8080" . $filename; 
+            }
+
             $content[$index] = [
                     'id' => $post->id,
                     'title' => '',
