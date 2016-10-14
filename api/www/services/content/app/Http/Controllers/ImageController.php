@@ -28,6 +28,13 @@ class ImageController extends Controller
                 break;
         }
 
+        // $image = imagecreatefrompng("space.png");
+        // imagefilter($src, IMG_FILTER_MEAN_REMOVAL);
+        imageinterlace($src, 1);
+        // header("content-type: image/png");
+        // imagepng($image);
+        // imagedestroy($image);
+
         // $dst = imagecreatetruecolor($newwidth, $newheight);
         // imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
@@ -35,7 +42,7 @@ class ImageController extends Controller
         // imagesavealpha($dst, true);
         // imagepng($dst, $file, 5);
 
-        //imagejpeg($src, $file, 50);
+        imagejpeg($src, $file, 75);
 
         // imagedestroy($dst);
     }
