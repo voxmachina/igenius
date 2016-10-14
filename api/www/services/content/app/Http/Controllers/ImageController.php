@@ -9,9 +9,9 @@ class ImageController extends Controller
 {
     public static function optimize($file, $w, $mime = 'image/jpeg')
     {
-        list($width, $height) = getimagesize($file);
-        $newwidth = $w;
-        $newheight = $w * $height / $width;
+        // list($width, $height) = getimagesize($file);
+        // $newwidth = $w;
+        // $newheight = $w * $height / $width;
 
         switch ($mime) {
             case 'image/jpeg':
@@ -28,44 +28,16 @@ class ImageController extends Controller
                 break;
         }
 
-        $dst = imagecreatetruecolor($newwidth, $newheight);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        // $dst = imagecreatetruecolor($newwidth, $newheight);
+        // imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
-        switch ($mime) {
-            case 'image/jpeg':
-                imagejpeg($dst, $file, 75);
-                break;
-            case 'image/png':
-                imagealphablending($dst, false);
-                imagesavealpha($dst, true);
-                imagepng($dst, $file, 5);
-                break;
-            case 'image/bmp':
-                imagewbmp($dst, $file);
-                break;
-            case 'image/gif':
-                imagegif($dst, $file);
-                break;
-        }
+        // imagealphablending($dst, false);
+        // imagesavealpha($dst, true);
+        // imagepng($dst, $file, 5);
 
-        imagedestroy($dst);
-    }
+        //imagejpeg($src, $file, 50);
 
-    private static function compress($source, $destination, $quality)
-    {
-        $info = getimagesize($source);
-
-        if ($info['mime'] == 'image/jpeg') {
-            $image = imagecreatefromjpeg($source);
-        } elseif ($info['mime'] == 'image/gif') {
-            $image = imagecreatefromgif($source);
-        } elseif ($info['mime'] == 'image/png') {
-            $image = imagecreatefrompng($source);
-        }
-
-        imagejpeg($image, $destination, $quality);
-
-        return $destination;
+        // imagedestroy($dst);
     }
 
     public static function getImage($filename)
@@ -76,13 +48,13 @@ class ImageController extends Controller
 
         $systemFilename = $filenameTokens[count($filenameTokens) - 1];
         
-        $cacheFile = dirname(__FILE__) . "/../../../storage/" . $systemFilename;
+        $cacheFile = dirname(__FILE__) . "/../../../storage/" . $systemFilename . ".cache.jpeg";
 
         if (!FileCache::cached($cacheFile)) {
             $content = file_get_contents($fileUrl);
             file_put_contents($cacheFile, $content);
             $info = getimagesize($cacheFile);
-            self::optimize($cacheFile, $info[0]/2, $info['mime']);
+            self::optimize($cacheFile, $info[0], $info['mime']);
         } else {
             $info = getimagesize($cacheFile);
         }
@@ -91,7 +63,7 @@ class ImageController extends Controller
         $content = file_get_contents($cacheFile);
 
         return response($content)
-            ->header('Content-Type', $info['mime'])
+            ->header('Content-Type', 'image/jpeg')
             ->header('Pragma', 'public')
             ->header('Content-Disposition', 'inline; filename="'.$systemFilename.'"');
     }
