@@ -7,6 +7,50 @@ use App\Http\Middleware\FileCache;
 
 class ImageController extends Controller
 {
+    public static function optimize($file, $w, $mime = 'image/jpeg')
+    {
+        list($width, $height) = getimagesize($file);
+        $newwidth = $w;
+        $newheight = $w * $height / $width;
+
+        switch ($mime) {
+            case 'image/jpeg':
+                $src = imagecreatefromjpeg($file);
+                break;
+            case 'image/png':
+                $src = imagecreatefrompng($file);
+                break;
+            case 'image/bmp':
+                $src = imagecreatefromwbmp($file);
+                break;
+            case 'image/gif':
+                $src = imagecreatefromgif($file);
+                break;
+        }
+
+        $dst = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+        switch ($mime) {
+            case 'image/jpeg':
+                imagejpeg($dst, $file, 75);
+                break;
+            case 'image/png':
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                imagepng($dst, $file, 5);
+                break;
+            case 'image/bmp':
+                imagewbmp($dst, $file);
+                break;
+            case 'image/gif':
+                imagegif($dst, $file);
+                break;
+        }
+
+        imagedestroy($dst);
+    }
+
     private static function compress($source, $destination, $quality)
     {
         $info = getimagesize($source);
@@ -37,12 +81,14 @@ class ImageController extends Controller
         if (!FileCache::cached($cacheFile)) {
             $content = file_get_contents($fileUrl);
             file_put_contents($cacheFile, $content);
-            self::compress($cacheFile, $cacheFile, 75);
+            $info = getimagesize($cacheFile);
+            self::optimize($cacheFile, $info[0]/2, $info['mime']);
         } else {
-            $content = file_get_contents($cacheFile);
+            $info = getimagesize($cacheFile);
         }
 
-        $info = getimagesize($cacheFile);
+        // always serve the cache optimized version
+        $content = file_get_contents($cacheFile);
 
         return response($content)
             ->header('Content-Type', $info['mime'])

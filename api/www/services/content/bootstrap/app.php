@@ -8,6 +8,11 @@ try {
     //
 }
 
+// for localhost developments only
+if ($_ENV['APP_ENV'] === 'local') {
+  header('Access-Control-Allow-Origin: *');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

@@ -47,8 +47,13 @@ class InstagramController extends Controller
 
             $filename = substr($post->images->standard_resolution->url, 8);
             $filenameTokens = explode("?", $filename);
-            $filename = "/api/www/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
-            $filename = "http://" . $_SERVER["HTTP_HOST"] . $filename; 
+            $filename = "/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
+
+            if ($_ENV['APP_ENV'] === 'local') {
+                $filename = "http://localhost:8080" . $filename;
+            } else {
+                $filename = "/api/www" . $filename; 
+            } 
 
             $content[$index] = [
                     'id' => $post->id,

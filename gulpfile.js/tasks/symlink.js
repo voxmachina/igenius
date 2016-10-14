@@ -124,7 +124,9 @@ gulp.task('symlink:create', ['symlink:prepare'], function() {
             'rm -rf ' + rootDir + 'current',
             'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current',
             'mv ' + rootDir + currentDateTimeStamp + '/index.html ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php',
-            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
+            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php',
+            'mv ' + rootDir + currentDateTimeStamp + '/api/www/services/content/.prod.env ' + rootDir + currentDateTimeStamp + '/api/www/services/content/.env',
+            'rm -f ' + rootDir + currentDateTimeStamp + '/api/www/services/content/storage/*.json'
         ]);
 });
 
