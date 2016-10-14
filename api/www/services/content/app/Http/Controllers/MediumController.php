@@ -61,11 +61,8 @@ class MediumController extends Controller
             if ($post->virtuals->previewImage->imageId !== "") {
                 $filename = substr($imageUrlPrefix . $post->virtuals->previewImage->imageId, 8);
                 $filenameTokens = explode("?", $filename);
-                $filename = "/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
-
-                if (strpos($_SERVER["HTTP_HOST"], "localhost") !== false) {
-                    $filename = "http://localhost:8080" . $filename; 
-                }
+                $filename = "/api/www/services/content/public/img/" . str_replace("/", ":", $filenameTokens[0]);
+                $filename = "http://" . $_SERVER["HTTP_HOST"] . $filename;
 
                 $content[$index]['thumbnail'] = $filename;
             }
