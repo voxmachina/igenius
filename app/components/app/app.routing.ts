@@ -6,9 +6,9 @@ import { AboutComponent} from "../about/about.component";
 import { ContactComponent} from "../contact/contact.component";
 
 const appRoutes: Routes = [
-  {
-    path: "",
-    component: HomeComponent
+    {
+        path: "",
+        component: HomeComponent
     },
     {
         path: "about",

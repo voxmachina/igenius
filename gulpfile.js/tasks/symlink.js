@@ -1,3 +1,5 @@
+/*jslint node: true, esversion: 6 */
+
 "use strict";
 
 const gulp = require('gulp');
@@ -6,6 +8,7 @@ const gzip = require('gulp-gzip');
 const htmlReplace = require('gulp-html-replace');
 const sass = require('gulp-sass');
 const htmlMin = require('gulp-html-minifier');
+const cleanCSS = require('gulp-clean-css');
 const GulpSSH = require('gulp-ssh');
 const config = require('./../../config/gulp.json');
 const rename = require('gulp-rename');
@@ -19,7 +22,19 @@ let gulpSSH = new GulpSSH({
     sshConfig: config.ssh
 });
 
-gulp.task('symlink:index', function() {
+let rootDir = config.rootDir;
+
+gulp.task('symlink:root', function(done) {
+   let taskName = process.argv[process.argv.length-1];
+
+   if (taskName === 'stage') {
+       rootDir = config.stageDir;
+   } 
+
+   done();
+});
+
+gulp.task('symlink:index', ['symlink:root'], function() {
     gulp.src('release/index.html')
         .pipe(htmlReplace({
             'js': {
@@ -35,12 +50,12 @@ gulp.task('symlink:index', function() {
                 tpl: '<link rel="stylesheet" type="text/css" href="%s"/>'
             },
             'criticalCss': {
-                src: gulp.src('./config/critical.scss').pipe(sass()),
+                src: gulp.src('./config/critical.scss').pipe(sass()).pipe(cleanCSS({compatibility: 'ie10'})),
                 tpl: '<style>%s</style>'
             },
             'criticalHtml': {
                 src: gulp.src('./config/critical.html').pipe(htmlMin()),
-                tpl: '<?php $rootDir = "'+config.rootDir+'"; ?>%s'
+                tpl: '<?php $rootDir = "'+rootDir+'"; ?>%s'
             }
         }))
         .pipe(gulp.dest('release/'));
@@ -50,9 +65,9 @@ gulp.task('symlink:helpers', ['symlink:index'], function() {
     return gulp.src(["./release/app/*.css", "./release/app/*.js", "./release/lib/*.js"])
       .pipe(rename(function (path) {
           if (path.basename === 'main' || path.basename === 'config') {
-              path.dirname = 'app'
+              path.dirname = 'app';
           } else {
-              path.dirname = 'lib'
+              path.dirname = 'lib';
           }
         path.basename += "." + currentDateTimeStamp;
         return path;
@@ -91,8 +106,6 @@ gulp.task('symlink:clean', ['symlink:helpers'], function() {
 });
 
 gulp.task('symlink:prepare', ['symlink:clean'], function() {
-    let rootDir = config.rootDir;
-
     return gulp.src(['release/**/*'], {
             dot: true
         })
@@ -103,8 +116,6 @@ gulp.task('symlink:prepare', ['symlink:clean'], function() {
 });
 
 gulp.task('symlink:create', ['symlink:prepare'], function() {
-    let rootDir = config.rootDir;
-
     return gulpSSH
         .exec([
             'mkdir ' + rootDir + currentDateTimeStamp,
@@ -113,9 +124,13 @@ gulp.task('symlink:create', ['symlink:prepare'], function() {
             'rm -rf ' + rootDir + 'current',
             'ln -s ' + rootDir + currentDateTimeStamp + ' ' + rootDir + 'current',
             'mv ' + rootDir + currentDateTimeStamp + '/index.html ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php',
-            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php'
+            'ln -s ' + rootDir + currentDateTimeStamp + '/api/www/services/content/resources/views/index.php ' + rootDir + currentDateTimeStamp + '/index.php',
+            'mv ' + rootDir + currentDateTimeStamp + '/api/www/services/content/.prod.env ' + rootDir + currentDateTimeStamp + '/api/www/services/content/.env',
+            'rm -f ' + rootDir + currentDateTimeStamp + '/api/www/services/content/storage/*.json'
         ]);
 });
+
+gulp.task('symlink:stage', ['symlink:create']);
 
 gulp.task('symlink', ['symlink:create'], function() {
     let zoneId = config.cloudflare.zoneId;

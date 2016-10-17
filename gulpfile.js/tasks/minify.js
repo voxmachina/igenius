@@ -1,3 +1,5 @@
+/*jslint node: true, esversion: 6 */
+
 "use strict";
 
 const gulp = require('gulp');
@@ -37,9 +39,9 @@ gulp.task('minify:helpers', ['minify:concat:helpers'], function(cb) {
 gulp.task('minify:css', function() {
     return gulp.src(['./release/**/*.css', '!release/lib/**/*', '!release/api/**/*'])
         .pipe(cleanCSS({
-            compatibility: 'ie8'
+            compatibility: 'ie10'
         }))
-        .pipe(gulp.dest('./release'))
+        .pipe(gulp.dest('./release'));
 });
 
 gulp.task('minify:html', function() {

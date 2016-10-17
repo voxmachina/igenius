@@ -6,4 +6,5 @@ dist
 release
 config/gulp.json
 google*
+app-build
 .vscode

@@ -4,6 +4,7 @@ use App\Http\Controllers\MediumController;
 use App\Http\Controllers\InstagramController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,10 @@ use App\Http\Controllers\AnalyticsController;
 | and give it the Closure to call when that URI is requested.
 |
 */
+
+$app->get('img/{filename}', function($filename) use ($app) {
+    return ImageController::getImage($filename);
+});
 
 /**
  * Returns the latest github feed in json format
