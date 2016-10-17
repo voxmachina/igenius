@@ -9,6 +9,12 @@ class ImageController extends Controller
 {
     public static function optimize($file, $mime = 'image/jpeg')
     {
+        $percent = 0.5;
+
+        list($width, $height) = getimagesize($file);
+        $newWidth = $width * $percent;
+        $newHeight = $height * $percent;
+
         switch ($mime) {
             case 'image/jpeg':
                 $src = imagecreatefromjpeg($file);
@@ -24,8 +30,12 @@ class ImageController extends Controller
                 break;
         }
 
-        imageinterlace($src, 1);
-        imagejpeg($src, $file, 75);
+        $thumb = imagecreatetruecolor($newWidth, $newHeight);
+
+        imagecopyresampled($thumb, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+        imageinterlace($thumb, 1);
+        imagejpeg($thumb, $file, 90);
     }
 
     public static function getImage($filename)
