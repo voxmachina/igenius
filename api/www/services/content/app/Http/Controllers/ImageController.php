@@ -7,12 +7,8 @@ use App\Http\Middleware\FileCache;
 
 class ImageController extends Controller
 {
-    public static function optimize($file, $w, $mime = 'image/jpeg')
+    public static function optimize($file, $mime = 'image/jpeg')
     {
-        // list($width, $height) = getimagesize($file);
-        // $newwidth = $w;
-        // $newheight = $w * $height / $width;
-
         switch ($mime) {
             case 'image/jpeg':
                 $src = imagecreatefromjpeg($file);
@@ -28,23 +24,8 @@ class ImageController extends Controller
                 break;
         }
 
-        // $image = imagecreatefrompng("space.png");
-        // imagefilter($src, IMG_FILTER_MEAN_REMOVAL);
         imageinterlace($src, 1);
-        // header("content-type: image/png");
-        // imagepng($image);
-        // imagedestroy($image);
-
-        // $dst = imagecreatetruecolor($newwidth, $newheight);
-        // imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-
-        // imagealphablending($dst, false);
-        // imagesavealpha($dst, true);
-        // imagepng($dst, $file, 5);
-
         imagejpeg($src, $file, 75);
-
-        // imagedestroy($dst);
     }
 
     public static function getImage($filename)
@@ -61,7 +42,7 @@ class ImageController extends Controller
             $content = file_get_contents($fileUrl);
             file_put_contents($cacheFile, $content);
             $info = getimagesize($cacheFile);
-            self::optimize($cacheFile, $info[0], $info['mime']);
+            self::optimize($cacheFile, $info['mime']);
         } else {
             $info = getimagesize($cacheFile);
         }
