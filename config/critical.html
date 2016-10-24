@@ -23,7 +23,7 @@
 
     $mediumFilename = $rootDir . 'current/api/www/services/content/storage/medium.json';
     $instagramFilename = $rootDir . 'current/api/www/services/content/storage/instagram.json';
-    $githubFilename = $rootDir . 'current/api/www/services/content/storage/github.json';
+    $twitterFilename = $rootDir . 'current/api/www/services/content/storage/twitter.json';
 
     if (file_exists($mediumFilename)) {
         $mediumPosts = json_decode(file_get_contents($mediumFilename));
@@ -33,8 +33,8 @@
         $instagramPosts = json_decode(file_get_contents($instagramFilename));
     }
 
-    if (file_exists($githubFilename)) {
-        $githubPosts = json_decode(file_get_contents($githubFilename));
+    if (file_exists($twitterFilename)) {
+        $twitterPosts = json_decode(file_get_contents($twitterFilename));
     }
 ?>
 <section class="dashboard dashboard-home">
@@ -75,12 +75,11 @@
     </div>
 
     <div class="posts posts-github">
-        <h4>Latest posts from github</h4>
+        <h4>Latest posts from twitter</h4>
         <ul>
-            <?php foreach($githubPosts as $post): ?>
+            <?php foreach($twitterPosts as $post): ?>
             <li>
                 <a href="<?php echo $post->url; ?>"><?php echo $post->title; ?></a>
-                <em><?php echo $post->subTitle; ?></em>
                 <span><?php echo $post->createdAt; ?></span>
             </li>
             <?php endforeach; ?>
