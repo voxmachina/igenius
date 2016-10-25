@@ -123,7 +123,8 @@ em {
   @include media-breakpoint-up(lg) {
     margin: 0;
     padding: 20px;
-  }
+    width: 20vw;
+  } 
 
   h4 {
     font-size: 11px;

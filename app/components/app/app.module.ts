@@ -6,6 +6,7 @@ import { AppComponent } from "./app.component";
 import { MediumPostsComponent } from "../medium-posts/medium-posts.component";
 import { InstagramPostsComponent } from "../instagram-posts/instagram-posts.component";
 import { GithubPostsComponent } from "../github-posts/github-posts.component";
+import { TwitterPostsComponent } from "../twitter-posts/twitter-posts.component";
 import { MenuComponent } from "../menu/menu.component";
 import { AboutComponent } from "../about/about.component";
 import { HomeComponent } from "../home/home.component";
@@ -14,6 +15,7 @@ import { ContactComponent } from "../contact/contact.component";
 import { MediumService } from "../../services/medium.service";
 import { InstagramService } from "../../services/instagram.service";
 import { GithubService } from "../../services/github.service";
+import { TwitterService } from "../../services/twitter.service";
 
 import { routing }  from "./app.routing";
 
@@ -28,6 +30,7 @@ import { routing }  from "./app.routing";
         MediumPostsComponent,
         InstagramPostsComponent,
         GithubPostsComponent,
+        TwitterPostsComponent,
         MenuComponent,
         AboutComponent,
         HomeComponent,
@@ -37,7 +40,8 @@ import { routing }  from "./app.routing";
     providers: [
         MediumService,
         InstagramService,
-        GithubService
+        GithubService,
+        TwitterService
     ]
 })
 

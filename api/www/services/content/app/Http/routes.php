@@ -5,6 +5,7 @@ use App\Http\Controllers\InstagramController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\TwitterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,14 @@ $app->get('img/{filename}', function($filename) use ($app) {
  */
 $app->get('github', function() use ($app) {
     return GithubController::getData();
+});
+
+/**
+ * Returns the latest twitter feed in json format
+ * Uses 2 hours file cache mechanism
+ */
+$app->get('twitter', function() use ($app) {
+    return TwitterController::getData();
 });
 
 /**
